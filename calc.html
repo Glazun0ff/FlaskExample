@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Калькуляция стоимости</title>
+    <style type="text/css">
+        .main {
+            display: none;
+        }
+
+        .orange {
+            background: #FFCC00;
+        }
+
+        .orange + div {
+            display: block;
+        }
+
+        span {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="col-md-12">
+    <table class="table">
+        <tbody>
+        <tr class="trth">
+            <th colspan="2">Наименование</th>
+            <th>Цена (руб.)</th>
+            <th>Количество</th>
+            <th>Стоимость (руб.)</th>
+        </tr>
+        <tr class="cart_item">
+            <td class="product-thumbnail">
+                <img class="attachment-small wp-post-image" src="">
+            </td>
+            <td class="product-name">
+                <p class="product-name__text">Бутылка 0,33 л</p>
+            </td>
+            <td class="product-price">
+                <p class="product-price__value">55</p>
+            </td>
+            <td class="product-quantity">
+                <div class="product-quantity__value">
+                    <input class="product-quantity__input" type="number" step="1" min="0" value="0" title="Qty"
+                           size="2">
+                </div>
+            </td>
+            <td class="product-subtotal">
+                <p class="product-subtotal__price">0</p>
+            </td>
+        </tr>
+        <tr class="cart_item">
+            <td class="product-thumbnail">
+                <img class="attachment-small wp-post-image" src="">
+            </td>
+            <td class="product-name">
+                <p class="product-name__text">Бутылка 0,5 л</p>
+            </td>
+            <td class="product-price">
+                <p class="product-price__value">75</p>
+            </td>
+            <td class="product-quantity">
+                <div class="product-quantity__value">
+                    <input class="product-quantity__input" type="number" step="1" min="0" value="0" title="Qty"
+                           size="2">
+                </div>
+            </td>
+            <td class="product-subtotal">
+                <p class="product-subtotal__price">0</p>
+            </td>
+        </tr>
+        <tr class="cart_item">
+            <td class="product-thumbnail">
+                <img class="attachment-small wp-post-image" src="">
+            </td>
+            <td class="product-name">
+                <p class="product-name__text">Бутылка 0,75 л</p>
+            </td>
+            <td class="product-price">
+                <p class="product-price__value">100</p>
+            </td>
+            <td class="product-quantity">
+                <div class="product-quantity__value">
+                    <input class="product-quantity__input" type="number" step="1" min="0" value="0" title="Qty"
+                           size="2">
+                </div>
+            </td>
+            <td class="product-subtotal">
+                <p class="product-subtotal__price">0</p>
+            </td>
+        </tr>
+        <tr class="noborder total-info-tr">
+            <td colspan="2"></td>
+            <td colspan="3">
+                <strong>При заказе от 100 бутылок предоставляется скидка 15 % от общей суммы
+                    заказа<strong></strong></strong>
+            </td>
+        </tr>
+        <tr class="noborder total-summ-tr">
+            <td colspan="4" class="order-amount__first">
+                <p>СУММА ЗАКАЗА:</p>
+            </td>
+            <td class="order-amount__second">
+                <p>0</p><span> руб.</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    $(function () {
+        function count_totals() {
+
+            var total = 0;  // значение общей суммы заказа
+
+            var list = "";  // перечень заказанных товаров
+
+            var listHidden = "";
+
+            var discount = 0.15; //скидка
+
+            var col = 0;
+            $('.cart_item').each(function () {
+
+                var price = $(this).find(".product-price__value").text(); // исходная цена товар
+                var qty = $(this).find(".product-quantity__input").val(); // значение value number
+                var title = $(this).find(".product-name__text").text(); // название товара
+
+                var summ = price * qty; // значение конечной цены за товар
+
+                $(this).find(".product-subtotal__price").text(summ);
+
+                total += summ;
+
+                if (summ != 0) {
+                    list += "<li> " + title + " " + qty + " шт" + " </li> ";
+                }
+
+                if (summ != 0) {
+                    listHidden += "| " + title + " " + qty + " шт" + " |";
+                }
+                col += +qty
+
+            });
+            var sale = '';
+
+            if (col >= 100) {
+                sale = total * discount; //считаем скидку
+                total = total - sale;
+            }
+            list = '<ul>' + list + '</ul>';
+            listHidden = listHidden + " Общая сумма заказа " + total + " руб.";
+
+            $(".order-amount__second p").text(total + ' ' + sale); // обновляем общую сумму
+            $(".list_products").html(list);// в textarea добавляем
+            $("#hidden-info").val(listHidden);
+        }
+
+        count_totals();
+        $("input").on("change", function () {
+            count_totals();
+        })
+
+    });
+</script>
+
+</body>
+</html>
