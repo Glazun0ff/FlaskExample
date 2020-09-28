@@ -35,7 +35,7 @@ def calc_kvadrat(x):
 
 @application.route("/calc")
 def show_html_page():
-    myfile = open("D:\Python\Flask\calc.html", mode='r', encoding="utf-8")
+    myfile = open("templates\calc.html", mode='r', encoding="utf-8")
     page   = myfile.read()
     myfile.close()
     return page
